@@ -9,8 +9,19 @@ RSpec.describe Airport do
             expect(airport).to respond_to(:land).with(1).argument
         end
 
-        it 'instructs a plane to takeoff' do 
+        it 'records planes that have landed' do 
+            airport.land(plane)
+            expect(airport.planes).to eq([plane])
+        end
+
+        it 'instructs a plane to take off' do 
             expect(airport).to respond_to(:take_off).with(1).argument
+        end
+
+        it 'confirms that a plane is no longer at the airport' do
+            airport.land(plane)
+            airport.take_off(plane)
+            expect(airport.planes).to eq([])
         end
 
     end
