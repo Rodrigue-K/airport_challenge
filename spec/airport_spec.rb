@@ -1,12 +1,13 @@
 require 'airport'
 
 describe Airport do 
-        let(:plane) { double('plane')}
-        let(:airport) { Airport.new }
+        let(:plane) { double :plane }
+        let(:airport) { Airport.new(weather) }
+        let(:weather) { double :weather }
         describe '#land' do
             context 'when not stormy' do
                 before do
-                    allow(airport).to receive(:stormy?).and_return(false)
+                    allow(weather).to receive(:stormy?).and_return(false)
                 end
                 
                 it 'instructs a plane to land' do
@@ -23,7 +24,7 @@ describe Airport do
         describe '#take_off' do
             context 'when not stormy' do
                 before do
-                    allow(airport).to receive(:stormy?).and_return(false)
+                    allow(weather).to receive(:stormy?).and_return(false)
                 end
                 
                 it 'can instruct a plane to take off' do 
@@ -31,7 +32,7 @@ describe Airport do
                 end
                 
                 it 'can confirms that a plane is no longer at the airport' do
-                    allow(airport).to receive(:stormy?).and_return(false)
+                    allow(weather).to receive(:stormy?).and_return(false)
                     airport.land(plane)
                     airport.take_off(plane)
                     expect(airport.planes).to eq([])
@@ -43,19 +44,19 @@ describe Airport do
         describe '#stormy?' do
             context 'stormy weather'
             it 'prevents plane from taking off' do
-                allow(airport).to receive(:stormy?).and_return(true)
+                allow(weather).to receive(:stormy?).and_return(true)
                 expect{ airport.take_off(plane )}.to raise_error('Cannot take off: weather is stormy')
             end
             
             it 'prevents plane landing' do
-                allow(airport).to receive(:stormy?).and_return(true)
+                allow(weather).to receive(:stormy?).and_return(true)
                 expect{ airport.land(plane )}.to raise_error('Cannot land: weather is stormy' )
             end
         end
         
         describe '#full?' do 
             it 'prevents landing' do
-                allow(airport).to receive(:stormy?).and_return(false)
+                allow(weather).to receive(:stormy?).and_return(false)
                 20.times { airport.land(plane) }
                 expect{ airport.land(plane )}.to raise_error('Cannot land: airport capacity reached')
             end

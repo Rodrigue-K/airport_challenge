@@ -6,8 +6,9 @@ class Airport
 
     CAPACITY = 20
 
-    def initialize
+    def initialize(weather)
         @planes = []
+        @weather = weather
     end 
 
     def land(plane)
@@ -24,7 +25,7 @@ class Airport
     private 
 
     def stormy?
-        Weather.new.stormy?
+        @weather.stormy?
     end
 
     def full?
