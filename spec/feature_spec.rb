@@ -3,7 +3,7 @@ require 'plane'
 require 'weather'
 
 RSpec.describe 'User stories' do
-    let(:airport) { Airport.new(weather) }
+    let(:airport) { Airport.new(weather, 20) }
     let(:plane) { Plane.new }
     let(:weather) { Weather.new }
     
@@ -27,10 +27,18 @@ RSpec.describe 'User stories' do
         expect{airport.land(plane)}.to raise_error( 'Cannot land: weather is stormy')
     end
 
-    it 'so that to prevent landing when the airport is full' do
-        allow(weather).to receive(:stormy?).and_return(false)        
+    it 'so that to prevent landing when the airport is full' do      
         allow(airport).to receive(:full?).and_return(true)
+        allow(weather).to receive(:stormy?).and_return(false)
         expect{airport.land(plane)}.to raise_error( 'Cannot land: airport capacity reached')
     end
+
+    it 'airports have a default capacity' do
+        default_airport = Airport.new(weather)
+        allow(weather).to receive(:stormy?).and_return(false)
+        Airport::DEFAULT_CAPACITY.times { default_airport.land(plane)}
+        expect{ default_airport.land(plane)}.to raise_error('Cannot land: airport capacity reached')
+    end
+
 
 end

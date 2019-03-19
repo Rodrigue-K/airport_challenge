@@ -2,8 +2,9 @@ require 'airport'
 
 describe Airport do 
         let(:plane) { double :plane }
-        let(:airport) { Airport.new(weather) }
+        let(:airport) { Airport.new(weather, 20) }
         let(:weather) { double :weather }
+
         describe '#land' do
             context 'when not stormy' do
                 before do
@@ -59,6 +60,17 @@ describe Airport do
                 allow(weather).to receive(:stormy?).and_return(false)
                 20.times { airport.land(plane) }
                 expect{ airport.land(plane )}.to raise_error('Cannot land: airport capacity reached')
+            end
+        end
+
+        context 'defaults' do
+            subject(:default_airport) { described_class.new(weather) }
+            
+            it 'has a default capacity' do
+                default_airport = described_class.new(weather)
+                allow(weather).to receive(:stormy?).and_return(false)
+                described_class::DEFAULT_CAPACITY.times { default_airport.land(plane) }
+                expect{default_airport.land(plane)}.to raise_error('Cannot land: airport capacity reached')
             end
         end
     end
