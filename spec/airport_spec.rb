@@ -39,4 +39,14 @@ describe Airport do
                     expect{ airport.land(plane )}.to raise_error('Cannot land: weather is stormy' )
                 end
             end
+
+            describe '#full?' do 
+                context 'airport capicity reached' do
+                    it 'prevents landing when capcity reached' do
+                        allow(airport).to receive(:stormy?).and_return(false)
+                        20.times { airport.land(plane) }
+                        expect{ airport.land(plane )}.to raise_error('Cannot land: airport capacity reached')
+                    end
+                end
+            end
         end
