@@ -1,3 +1,5 @@
+require 'weather'
+
 class Airport
 
     attr_reader :planes
@@ -22,7 +24,7 @@ class Airport
     private 
 
     def stormy?
-        rand(1..10) > 5
+        Weather.new.stormy?
     end
 
     def full?

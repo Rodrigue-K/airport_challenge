@@ -1,5 +1,6 @@
 require 'airport'
 require 'plane'
+require 'weather'
 
 RSpec.describe 'User stories' do
     let(:airport) { Airport.new }
